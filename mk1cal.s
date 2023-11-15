@@ -26,6 +26,10 @@ mk1cal:
 	bl monthwoffset
 	mov r7, r0
 
+	mov r0, r12
+	bl showheader
+	mov r12, r0
+
 	@ for(d=1;d<=dlen;d++){ ... }
 for:
 	cmp r9, r6
