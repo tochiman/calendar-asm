@@ -27,6 +27,8 @@ mk1cal:
 	mov r7, r0
 
 	mov r0, r12
+	mov r1, r4
+	mov r2, r5
 	bl showheader
 	mov r12, r0
 

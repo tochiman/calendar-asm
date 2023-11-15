@@ -5,7 +5,7 @@
 #define IW          (7)
 #define CW          (3)
 #define OW          (21)
-#define OH          (6)
+#define OH          (8)
 #define MAX_CANVAS  (OW*OH)
 
 extern int monthwoffset(int,int,int);

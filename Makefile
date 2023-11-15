@@ -1,5 +1,5 @@
 PROGRAM = calendar
-OBJS = calendar.c mk1cal.s  divsub.s modsub.s monthlen.s monthwoffset.s showheader.s
+OBJS = calendar.c mk1cal.s  divsub.s modsub.s monthlen.s monthwoffset.s showheader.s pdec.s
 CC = cc
 .PHONY: calendar
 
