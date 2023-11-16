@@ -37,6 +37,5 @@ PDL3:
         add r5, r5, #1
         b PDL3
 PDL3OUT:
-        mov r0, r4
         pop {r4-r5, lr}
         bx lr

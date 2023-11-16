@@ -3,16 +3,15 @@
 	.type		mk1cal,		%function
 mk1cal:
 	push {r4-r12,lr}
-	mov r4, r0 		@ y
-	mov r5, r1 		@ m
-	mov r6, #0		@ r6=dlen
-	mov r7, #0		@ r7=woff
-	mov r8, #0		@ r8=r
-	mov r9, #1		@ r9=d
-	mov r10, #0		@ r10=c
-	mov r11, #0		@ r11=b
-	mov r12, r2		@ r12=char*
-
+	mov r4, r0 				@ y
+	mov r5, r1 				@ m
+	mov r6, #0				@ r6=dlen
+	mov r7, #0				@ r7=woff
+	mov r8, #0				@ r8=r
+	mov r9, #1				@ r9=d
+	mov r10, #0				@ r10=c
+	mov r11, #0				@ r11=b
+	mov r12, r2				@ r12=char*
 
 	@ Call monthlen of function
 	mov r0, r4
@@ -24,13 +23,21 @@ mk1cal:
 	mov r1, r5
 	mov r2, #1
 	bl monthwoffset
-	mov r7, r0
+	@月曜始まりの場合0が入っているためオフセットをずらす
+	push {r6}				@　レジスタが足りないため一時的にr6使用
+	mov r6, r3				@ r6に月曜始まりの時はCの「第４引数の0」が入る, そうでなければ「第４引数の1」
+	cmp r6, #0				@ もしr6が０なら
+	subeq r0, r0, #1		@ 月曜始まりなのでオフセットを１個ずらす
+	mov r7, r0				@ monthwoffsetの返り値をwoff(r7)に格納
 
 	mov r0, r12
 	mov r1, r4
 	mov r2, r5
+	mov r3, r6
 	bl showheader
 	mov r12, r0
+
+	pop {r6}				@ pushしたから戻す
 
 	@ for(d=1;d<=dlen;d++){ ... }
 for:
