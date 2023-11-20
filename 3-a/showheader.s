@@ -10,6 +10,7 @@ showheader:
     mov r7, #0              @ dayofweekから読み取った文字を格納するよう   
     mov r8, r1              @ 年を格納
     mov r9, r2              @ 月を格納
+    mov r10, r3             @　月曜始まりかの判定
 
     add r4, r4, #7
     mov r0, r8
@@ -23,6 +24,7 @@ showheader:
     add r4, r4, #9
 
     @月曜始まりの場合0が入っているため３バイトずらず
+    cmp r10, #0
     addeq r5, r5, #3
     
     @ for(r6=0; r6 <= 21; r6++)

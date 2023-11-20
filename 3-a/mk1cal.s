@@ -23,8 +23,11 @@ mk1cal:
 	mov r1, r5
 	mov r2, #1
 	bl monthwoffset
-	@月曜始まり
-	sub r0, r0, #1		@ 月曜始まりなのでオフセットを１個ずらす
+	@月曜始まりの場合0が入っているためオフセットをずらす
+	push {r6}				@　レジスタが足りないため一時的にr6使用
+	mov r6, r3				@ r6に月曜始まりの時はCの「第４引数の0」が入る, そうでなければ「第４引数の1」
+	cmp r6, #0				@ もしr6が０なら
+	subeq r0, r0, #1		@ 月曜始まりなのでオフセットを１個ずらす
 	mov r7, r0				@ monthwoffsetの返り値をwoff(r7)に格納
 
 	mov r0, r12
@@ -33,6 +36,8 @@ mk1cal:
 	mov r3, r6
 	bl showheader
 	mov r12, r0
+
+	pop {r6}				@ pushしたから戻す
 
 	@ for(d=1;d<=dlen;d++){ ... }
 for:
