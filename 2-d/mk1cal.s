@@ -6,19 +6,19 @@ mk1cal:
 	mov r4, r0 				@ y
 	mov r5, r1 				@ m
 	@ 1月だったら前の年に戻して12月をセット
-	cmp r5, #1
-	subne r5, r5, #1
-	subeq r4, r4, #1
-	moveq r5, #12
+	@ cmp r5, #1
+	@ subne r5, r5, #1
+	@ subeq r4, r4, #1
+	@ moveq r5, #12
 	mov r10, #0				@forのカウント用
 	mov r12, r2				@ r12=char*
+	mov r11, r3
 
 	@ ここから3回分カレンダーを計算して呼びして配列に格納する
 for_cal:
-	cmp r10, #3
+	cmp r10, r11
 	beq end
-	add r10, r10, #1
-	push {r10,r12}
+	push {r10-r12}
 	mov r6, #0				@ r6=dlen
 	mov r7, #0				@ r7=wosff
 	mov r8, #0				@ r8=r
@@ -36,12 +36,6 @@ for_cal:
 	mov r1, r5
 	mov r2, #1
 	bl monthwoffset
-
-	@月曜始まりの場合0が入っているためオフセットをずらす
-	push {r6}				@　レジスタが足りないため一時的にr6使用
-	mov r6, r3				@ r6に月曜始まりの時はCの「第４引数の0」が入る, そうでなければ「第４引数の1」
-	cmp r6, #0				@ もしr6が０なら
-	subeq r0, r0, #1		@ 月曜始まりなのでオフセットを１個ずらす
 	mov r7, r0				@ monthwoffsetの返り値をwoff(r7)に格納
 
 	mov r0, r12
@@ -50,8 +44,6 @@ for_cal:
 	mov r3, r6
 	bl showheader
 	mov r12, r0
-
-	pop {r6}				@ pushしたから戻す
 
 	@ for(d=1;d<=dlen;d++){ ... }
 for:
@@ -85,7 +77,7 @@ if_d:
 	cmp r0, #0
 	beq if_d_done
 	strb r0, [r12, r11]
-	
+
 if_d_done:
 	add r11, r11, #1	@ b++
 	@ canvas[b] = d%10 + '0'
@@ -105,7 +97,8 @@ if_c_done:
 	add r9, r9, #1 @ for次のループへ
 	b for
 for_done:
-	pop {r10,r12}
+	pop {r10-r12}
+	add r10, r10, #1
 	@ 次のカレンダーの書き込む位置を指定
 	add r12, r12, #168
 	@ 12月だったら次の年の1月にセットする
