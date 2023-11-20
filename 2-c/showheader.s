@@ -10,7 +10,6 @@ showheader:
     mov r7, #0              @ dayofweekから読み取った文字を格納するよう   
     mov r8, r1              @ 年を格納
     mov r9, r2              @ 月を格納
-    mov r10, r3             @　月曜始まりかの判定
 
     add r4, r4, #7
     mov r0, r8
@@ -21,15 +20,11 @@ showheader:
     mov r0, r9
     mov r1, r4
     bl pdec
-    add r4, r4, #9
+    add r4, r4, #10
 
-    @月曜始まりの場合0が入っているため３バイトずらず
-    cmp r10, #0
-    addeq r5, r5, #3
-    
     @ for(r6=0; r6 <= 21; r6++)
 for_dow:
-    cmp r6, #21            
+    cmp r6, #21
     beq for_dow_done        @　forループ終了(r6が22になったら)
     ldrb r7, [r5, r6]       @　r7にdayofweekのアドレスから読み取った文字を書き込む
     strb r7, [r4, r6]       @　r7をchar配列のメモリに書き込む
@@ -37,12 +32,12 @@ for_dow:
     b for_dow               @ ループ続行
 
 for_dow_done:
-    add r4, r4, #21         @ 曜日が終わって改行をしてる
+    add r4, r4, #22         @ 曜日が終わって改行をしてる
     mov r0, r4              @ charの配列を返してる
     pop {r4-r10,lr}
     bx lr
 
 	.section .data
 dayofweek:
-	.ascii "Su Mo Tu We Th Fr Sa Su "
+	.ascii "Su Mo Tu We Th Fr Sa "
     
