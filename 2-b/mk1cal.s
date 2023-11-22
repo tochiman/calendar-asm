@@ -30,7 +30,6 @@ mk1cal:
 	mov r0, r12
 	mov r1, r4
 	mov r2, r5
-	mov r3, r6
 	bl showheader
 	mov r12, r0
 
