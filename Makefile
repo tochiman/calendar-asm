@@ -1,18 +1,15 @@
-# 引数をディレクトリ名として受け取る
-DIR = $(shell echo $1)
+PROGRAM = cal
+OBJS1 = calendar.c mk1cal.s  divsub.s modsub.s monthlen.s monthwoffset.s
+OBJS2 = calendar.c mk1cal.s  divsub.s modsub.s monthlen.s monthwoffset.s showheader.s pdec.s
+OBJS3 = calendar.c mk1cal.s  divsub.s modsub.s monthlen.s monthwoffset.s showheader.s pdec.s
+CC = cc
+.PHONY: cal
 
-# ディレクトリ内の.cや.sファイルをすべてリストアップする
-SRCS = $(wildcard $(DIR)/*.c $(DIR)/*.s)
+1:
+	$(CC) -o $(PROGRAM) $(OBJS1)
 
-# 出力ファイルを指定する
-TARGET = cal
+2:
+	$(CC) -o $(PROGRAM) $(OBJS2)
 
-# ccでコンパイルする
-all: $(TARGET)
-$(TARGET): $(SRCS)
-	cc -o $(TARGET) $(SRCS)
-
-# ディレクトリ名を指定せずにmakeコマンドを実行した場合は、カレントディレクトリを対象とする
-.PHONY: all
-all:
-	$(MAKE) $(MAKECMDGOALS) $(DIR)
+3:
+	$(CC) -o $(PROGRAM) $(OBJS3)
